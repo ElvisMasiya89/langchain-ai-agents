@@ -42,4 +42,3 @@ if __name__ == "__main__":
     print(f"Question: {query}")
     print(f"Answer: {result['answer']}")
     print(f"Sources: {len(result['context'])} documents retrieved")
-

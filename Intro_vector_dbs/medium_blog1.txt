@@ -1,0 +1,274 @@
+Write
+
+Sign in
+Understanding Vector Databases [ A Brief Primer]
+Vaibhav Pandey
+Vaibhav Pandey
+9 min read
+·
+Apr 22, 2024
+
+In this article, we will understand the need for Vector Databases, how they differ from traditional databases. We will also visually explore how they store data and how queries retrieve data from a multi dimensional vector space. We will understand how indexes can help with faster vector search and read about some of the popular vector databases out there.
+
+Also Read : How To use Chroma DB with Open AI Embeddings
+Introduction
+
+With the rise of LLM’s, data of all kinds is growing at a massive scale. Most of this data is unstructured, which the LLM’s are very good (thanks to embedding models and their ability to find meaning i.e. context and intent from data) at. There is a rapid increase of text, images and videos. Traditional RDBMS databases were designed to be the backbone for apps which made use of or had a sense of the structure of their data. Its important that in today’s age this derived structure from unstructured pdf’s, texts, images, audio, video etc is kept in a data structure that allows for faster and efficient storing, processing and searching of the high dimensional dense vector space.
+
+Vector databases were built out of this need (first as a concept and then we saw several implementations of these concepts). They enable efficient similarity search, allowing users to find similar items based on their vector representations.
+
+I have also made a video on this topic.
+How Vector Databases differ from Traditional Databases
+
+As mentioned during the Introduction of this article, applications were initially built in a way that they captured a lot of structured data using for fills and other ways and this data was then stored in a Traditional RDBMS databases. These databases have excelled at managing and querying data that fits neatly into tables, using SQL (Structured Query Language) for data manipulation and retrieval.
+
+With time, we are seeing more content getting generated in the form of images, videos, audio, pdf’s, text which is written without a coherent structure. This unstructured data has till now found its way into what is known as NoSQL databases (mongodb etc..).
+
+Also for use in various textual tasks involving machine learning, NLP and now with Large Language Models, this unstructured data (domain dependent and independent) is converted into a high dimensional vector representation, where each element of the vector corresponds to a specific feature or attribute of the data.
+
+    Structured data refers to information that follows a predefined schema, such as data stored in tables with fixed rows and columns. On the other hand, unstructured data, like text documents, images, and videos, doesn’t adhere to a rigid structure.
+
+Key differences between Vector databases and Traditional databases include:
+
+    Data Representation: Traditional databases store data as structured tables, while vector databases represent data as high-dimensional vectors.
+    Querying Mechanism: Traditional databases use SQL for querying structured data, whereas vector databases employ similarity search based on vector proximity.
+    Scalability: Vector databases are designed to handle large-scale unstructured data and can scale horizontally to accommodate growing data volumes.
+    Search Performance: Vector databases offer fast and efficient similarity search, even for massive datasets, thanks to their specialized indexing techniques.
+
+Press enter or click to view image in full size
+Fig : Traditional Databases have excelled at storing and querying structured data.
+Storing Data in Vector Databases
+
+A vector is a mathematical representation of a data point or an object in a high dimensional dense space. Each element of the vector corresponds to a specific feature or attribute of the text or data that the vector represents.
+
+In order to convert raw unstructured data like an image or a video or plain textual sentence or paragraph into a vector representation, an embedding function is called. Embedding functions take raw data as input and output a dense, fixed length vector. Embedding models (which generate embeddings when you call the function) capture essential features and understand relationships within the data. They then generate embedding vectors such that similar texts (having similar vectors) fall close to each other on the high dimensional vector plane. These vectors are then stored for later use in Vector databases.
+Press enter or click to view image in full size
+Source : Open AI
+
+    The high dimensional space of a vector (database) is a mathematical formulation / construct that allows a vector to take up a position basis its values. Similar vectors get located close to each other whereas dissimilar vectors are farther apart. This kind of arrangement as we will read in a while, helps with faster look ups for similarity search and retrieval.
+
+Press enter or click to view image in full size
+Fig : Embeddings of Similar Vectors are stored closer to each other in Vector DB High Dimensional space.
+Querying Vector Databases
+
+Querying and retrieving vectors makes use of the concept of similarity search, which finds most similar vectors to a given query vector. Traditional databases on the other hand work on exact matching or structured queries. Vector Databases using their ability to find similar vectors from the vector space enable users to search for items based on their semantic similarity.
+A note on Cosine Similarity and Euclidean Distance
+
+In order to compute Similarity search, the two common similarity measures used are cosine similarity and Euclidean distance. While cosine similarity makes use of the angle between the two vectors. Smaller angles between the vectors produce higher values indicating higher similarity. (Do note cosine 0 deg = 1 and cosine 90 deg = 0).
+Get Vaibhav Pandey’s stories in your inbox
+
+Join Medium for free to get updates from this writer.
+
+Euclidean distance on the other hand calculates the straight-line distance between two vectors, with smaller distances suggesting higher similarity.
+Similarity Search Process in Vector Databases
+
+The similarity search process in vector databases typically follows these steps:
+
+    Query Embedding: The user provides a query, such as a text description or an image, which is then converted into a vector representation using the same embedding function used for storing the data.
+    Similarity Computation: The vector database computes the similarity scores between the query vector and the stored vectors using a similarity measure like cosine similarity or Euclidean distance.
+    Retrieval of Similar Vectors: The vector database retrieves the top-k most similar vectors based on the computed similarity scores. These vectors represent the items that are most closely related to the query.
+
+Press enter or click to view image in full size
+Fig : Query Search and Retrieval using Vector DB
+Indexing Techniques for Faster Vector Search
+
+We have seen that theoretically vector databases store embeddings in the vector space an then compare incoming query vector to each vector stored in the database for arriving at a similarity score. This approach can have a major scaling issue as the size of the database grows, making it impractical for large-scale datasets and production environments. This is where indexing techniques come into play, enabling faster and more efficient vector searches.
+
+Database (Traditional / Vector / NoSQL) indexes aim to organize the data space in a way that allows for quick retrieval of information. In case of Vector DB’s it organizes the vector space such that identification of similar vectors can be done without the need for exhaustive comparisons.
+
+There are two popular approaches that get discussed often in this regard
+
+    Approximate Nearest Neighbor (ANN) Search: ANN algorithms, such as locality-sensitive hashing (LSH) or hierarchical navigable small world (HNSW), create compact representations of the vector space by partitioning it into regions or clusters. These algorithms trade a small amount of search accuracy for significant speed improvements, enabling fast retrieval of approximate nearest neighbors.
+    Product Quantization (PQ): PQ is a compression technique that divides vectors into subvectors and quantizes them separately. By representing vectors as a combination of quantized subvectors, PQ reduces the memory footprint and speeds up similarity computations. PQ-based indexing allows for efficient storage and retrieval of large-scale vector datasets.
+
+Press enter or click to view image in full size
+Product Quantization ; source Pinecone
+Benefits of Indexing
+
+Indexing techniques bring several benefits to vector search performance and scalability:
+
+    Faster Search Times: By organizing the vector space into efficient data structures, indexing enables quick identification of relevant regions or clusters, reducing the number of vector comparisons required. This leads to significantly faster search times compared to exhaustive search, allowing for real-time similarity queries.
+    Scalability: Indexing techniques make it possible to handle large-scale vector databases efficiently. As the database grows, the indexing structures can be updated incrementally, maintaining search performance without the need for reindexing the entire dataset. This scalability is crucial for applications dealing with continuously expanding datasets.
+    Reduced Memory Footprint: Some indexing techniques, like product quantization, compress the vector representations, reducing the memory footprint of the database. This allows for efficient storage and retrieval of massive vector datasets, even on resource-constrained systems.
+
+Popular Vector Databases
+
+Let’s take a look at some of the widely used vector databases:
+
+    Faiss: Developed by Facebook AI Research, Faiss is an open-source library for efficient similarity search and clustering of dense vectors. It offers a wide range of indexing and search algorithms, including product quantization, hierarchical navigable small world graphs (HNSW), and inverted file systems. Faiss is known for its high performance and scalability, making it suitable for large-scale applications like image and video retrieval.
+    Pinecone : Pinecone is a fully managed vector database that offers a scalable and efficient solution for storing, searching, and managing high-dimensional vectors. It provides a simple API for integrating vector search into applications, supports various indexing options optimized for recall or speed, and ensures data security through encryption and access control. Pinecone’s ability to handle billions of vectors with sub-second query latency makes it suitable for applications like semantic search, recommendation systems, anomaly detection, and natural language processing. Its fully managed nature and ease of use make it an attractive choice for businesses and developers working with large-scale vector data.
+
+3. Chroma DB : Chroma DB is an open source embedding database which can help you generate embeddings using various embedding models, store those embeddings, query and retrieve your embedded text. I have written a detailed article on Chroma DB and how you can use it with Python and Open AI Embeddings.
+
+4. Elasticsearch : Elasticsearch, primarily known as a distributed search and analytics engine, has been extended to support vector search capabilities through the Elasticsearch Vector Search plugin. This plugin allows Elasticsearch to store and search dense vector representations, enabling similarity search and retrieval of high-dimensional data. By leveraging Elasticsearch’s distributed architecture and scalability, the Vector Search plugin can handle large-scale vector datasets and provide fast query performance. It supports various indexing techniques, such as hierarchical navigable small world graphs (HNSW), and offers options for approximate nearest neighbor search. While Elasticsearch is not a dedicated vector database, its vector search capabilities make it a viable option for applications that require similarity search alongside traditional text-based search and analytics.
+
+The choice of vector database depends on factors such as the size and dimensionality of the dataset, the desired trade-off between accuracy and speed, the available computational resources, and the specific requirements of the application.
+Conclusion
+
+As the volume and complexity of unstructured data continue to grow, vector databases will play an increasingly vital role in unlocking the value hidden within this data. They enable powerful applications like semantic search, recommendation systems, and anomaly detection, empowering organizations to derive insights and make data-driven decisions.
+
+Looking ahead, the field of vector databases is poised for further advancements. Researchers and practitioners are continuously exploring new indexing techniques, compression methods, and query optimization strategies to push the boundaries of similarity search performance and scalability. As vector databases evolve, they will undoubtedly open up new possibilities for analyzing and deriving value from unstructured data.
+
+If you’re intrigued by the potential of vector databases, I encourage you to explore and experiment with them. Start by familiarizing yourself with the concepts and techniques discussed in this blog post, and then dive into the documentation and examples provided by the popular vector database libraries. By hands-on experience, you’ll gain a deeper understanding of how vector databases can be applied to solve real-world problems and unlock the power of unstructured data.
+Vector Database
+Generative Ai Tools
+Embeddings Search
+Pinecone
+Llm Applications
+Vaibhav Pandey
+Written by Vaibhav Pandey
+403 followers
+·
+621 following
+
+Technology and Social Media Enthusiast. Helping build next wave of product commerce through non-intrusive ad technology @tyrootech.
+Responses (1)
+
+Write a response
+
+What are your thoughts?
+Mani Kolbe
+
+Mani Kolbe
+
+Dec 2, 2024
+
+Nice work Vaibhav. What tool are you using to build your diagrams?
+
+More from Vaibhav Pandey
+A Concise Tutorial on Langchain and Hugging Face LLMs with Langsmith Observability
+Vaibhav Pandey
+
+Vaibhav Pandey
+A Concise Tutorial on Langchain and Hugging Face LLMs with Langsmith Observability
+In this tutorial, my aim is to help you with the process of getting started with Langchain. Langchain is a powerful open source framework…
+Apr 13, 2024
+2
+[How-To] Zero Shot Classification using Open AI Embeddings and Python
+Vaibhav Pandey
+
+Vaibhav Pandey
+[How-To] Zero Shot Classification using Open AI Embeddings and Python
+Learn how to leverage state-of-the-art language models to classify text data without need for labeled training examples. We will use…
+Apr 20, 2024
+3
+Seamless Language Translation in Python: Leveraging LangChain and OpenAI with Pandas
+Vaibhav Pandey
+
+Vaibhav Pandey
+Seamless Language Translation in Python: Leveraging LangChain and OpenAI with Pandas
+As part of this article we will build a langauge translation pipeline which will be used for language translation using the LangChain…
+May 21, 2024
+Using Pingdom and Slack for Real Time Monitoring of Production Systems
+Engineering@Tyroo
+
+In
+
+Engineering@Tyroo
+
+by
+
+Vaibhav Pandey
+Using Pingdom and Slack for Real Time Monitoring of Production Systems
+Once your software application has gone live, its important that it stays up and active monitoring is an integral part of the equation…
+Aug 22, 2016
+27
+See all from Vaibhav Pandey
+Recommended from Medium
+Qdrant-Powered RAG with Custom Re-ranking: A Practical Guide
+GoPenAI
+
+In
+
+GoPenAI
+
+by
+
+Aviral Mittal
+Qdrant-Powered RAG with Custom Re-ranking: A Practical Guide
+Large Language Models (LLMs) are powerful but limited by their training data. To make them production-ready — especially for…
+Jun 9
+24
+Fixing 14 Complex RAG Failures with Knowledge Graphs
+Level Up Coding
+
+In
+
+Level Up Coding
+
+by
+
+Fareed Khan
+Fixing 14 Complex RAG Failures with Knowledge Graphs
+Ambiguity, Multi-Hop, Hallucinations, and more
+3d ago
+687
+5
+An example of a perfect, human designed dashboard interface for desktop and mobile phone
+Michal Malewicz
+
+Michal Malewicz
+The End of Dashboards and Design Systems
+Design is becoming quietly human again.
+Nov 26
+2.1K
+80
+Stanford Just Killed Prompt Engineering With 8 Words (And I Can’t Believe It Worked)
+Generative AI
+
+In
+
+Generative AI
+
+by
+
+Adham Khaled
+Stanford Just Killed Prompt Engineering With 8 Words (And I Can’t Believe It Worked)
+ChatGPT keeps giving you the same boring response? This new technique unlocks 2× more creativity from ANY AI model — no training required…
+Oct 20
+19.3K
+475
+🔍 7 Popular LLMs Explained in 7 Minutes: GPT, BERT, LLaMA & More
+Rohan Mistry
+
+Rohan Mistry
+🔍 7 Popular LLMs Explained in 7 Minutes: GPT, BERT, LLaMA & More
+Curious about what powers ChatGPT, Claude, or Google Gemini? Dive into the architectures behind the biggest large language models in AI…
+Jun 27
+11
+Building Agentic RAG with LangGraph: Mastering Adaptive RAG for Production
+Artificial Intelligence in Plain English
+
+In
+
+Artificial Intelligence in Plain English
+
+by
+
+Piyush Agnihotri
+Building Agentic RAG with LangGraph: Mastering Adaptive RAG for Production
+Build intelligent RAG systems that know when to retrieve documents, search the web, or generate responses directly
+Jul 20
+2.2K
+31
+See more recommendations
+
+Help
+
+Status
+
+About
+
+Careers
+
+Press
+
+Blog
+
+Privacy
+
+Rules
+
+Terms
+
+Text to speech

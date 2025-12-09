@@ -1,20 +1,20 @@
-from dotenv import load_dotenv
-from langchain_ollama import ChatOllama
+import os
 
-# from langchain.prompts import PromptTemplate
+from dotenv import load_dotenv
 from langchain_core.prompts.prompt import PromptTemplate
+from langchain_openai import ChatOpenAI
 
 load_dotenv()
 
 
 def main():
-    # llm = ChatOpenAI(
-    #     api_key=os.environ.get("OPENAI_API_KEY"),
-    #     model="gpt-3.5-turbo",
-    #     temperature=0.7
-    # )
+    llm = ChatOpenAI(
+        api_key=os.environ.get("OPENAI_API_KEY"),
+        model="gpt-3.5-turbo",
+        temperature=0.7
+    )
 
-    llm = ChatOllama(model="gpt-oss:20b", temperature=0.7)
+    # llm = ChatOllama(model="gpt-oss:20b", temperature=0.7)
 
     wikipedia_content = """
     Elon Reeve Musk (/ˈiːlɒn/ EE-lon; born June 28, 1971) is an international businessman and entrepreneur known for his leadership of Tesla, SpaceX, X (formerly Twitter), and the Department of Government Efficiency (DOGE). Musk has been the wealthiest person in the world since 2021; as of May 2025, Forbes estimates his net worth to be US$424.7 billion.

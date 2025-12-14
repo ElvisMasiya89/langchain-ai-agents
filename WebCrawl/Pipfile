@@ -1,0 +1,39 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+asyncio = "*"
+aiohttp = "*"
+beautifulsoup4 = "*"
+black = "*"
+tiktoken = "*"
+openai = "*"
+fastapi = "*"
+uvicorn = "*"
+streamlit = "*"
+tqdm = "*"
+isort = "*"
+langchainhub = "*"
+langchain-community = "*"
+langsmith = "*"
+langchain-pinecone = "*"
+python-dotenv = "*"
+langchain-tavily = "*"
+tavily-python = "*"
+pinecone = "*"
+langchain-openai = "*"
+ratelimit = "*"
+backoff = "*"
+
+[dev-packages]
+ipykernel = "*"
+pytest = "*"
+pytest-asyncio = "*"
+
+[requires]
+python_version = "3.11"
+
+[pipenv]
+allow_prereleases = true

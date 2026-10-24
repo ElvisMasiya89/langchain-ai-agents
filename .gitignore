@@ -215,3 +215,6 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+# Local artifacts (added 2026-10-24)
+.DS_Store
+**/.DS_Store
